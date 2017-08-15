@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>弹幕</title>
+	<style>
+		*
+		{
+			padding: 0;margin: 0;
+		}
+		body,html
+		{
+			overflow-x:hidden;
+			height: 100%; 
+		}
+	</style>
+</head>
+<body>
+	<canvas width="1350" height="630"></canvas>
+	<input type="text" class="txt">
+	<input type="button" class="btn" value="发送">
+</body>
+</html>
+<script>
+	var danmu = [];
+	var mydanmu =[];
+	var mytext = [];
+	var text = ['hh','老铁没毛病','oo','dd','pp','ee','我最帅','主播真帅',66666666,'垃圾主播'];
+	var colors = ["#33B5E5","#0099CC","#AA66CC","#9933CC","#99CC00","#669900","#FFBB33","#FF8800","#FF4444","#CC0000"];
+	setInterval(function()
+	{	var cNum = Math.floor(Math.random()* colors.length);	
+		var tNum = Math.floor(Math.random()* text.length);
+		danmu.push(
+		{
+			x:0,
+			y:Math.random()*(600),
+			s:(Math.random()+1)*3,
+			c:colors[cNum],
+			t:text[tNum],
+		})
+
+	},1000)
+function  dan(){
+	setInterval(function()
+	{	
+
+		var can = document.querySelector("canvas");
+		var pen = can.getContext("2d");
+		pen.clearRect(0, 0, 1350, 600);
+		for(var i in danmu)
+		{
+			if(danmu[i].x>1350)
+			{
+				danmu.splice(i,1);
+			}
+			pen.font = "20px Microsoft Yahei";
+			pen.fillStyle = danmu[i].c;
+			pen.fillText(danmu[i].t,danmu[i].x+=danmu[i].s,danmu[i].y)
+		}
+		for(var i in mydanmu)
+ 		{	
+ 			var len = mytext.length;
+ 			if(mydanmu[i].x>1350)
+			{
+				mydanmu.splice(i,1);
+			}
+			pen.font = "40px Microsoft Yahei";
+			pen.fillStyle = 'black';
+			pen.fillText(mydanmu[i].t,mydanmu[i].x+=mydanmu[i].s,mydanmu[i].y)
+		}
+	},1000/24)
+}
+ dan();	
+ var btn = document.querySelector('.btn');
+ var txt = document.querySelector('.txt');
+ var status = 0;
+ btn.onclick = function()
+ {	 
+ 	if(status == 0)
+ 	{	
+ 		mytext.push(txt.value);
+ 		mydanmu.push({
+		x:0,
+		y:Math.random()*(600),
+		s:8,
+		t:mytext[mytext.length-1]
+	 	});
+ 	}
+ 	status =1;
+ 	setTimeout(function()
+	 	{
+	 		status = 0;
+	 	},5000)
+ }	
+	
+</script>
